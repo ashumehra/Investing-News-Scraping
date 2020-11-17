@@ -16,7 +16,7 @@ $ pip install -r requirements.txt
 Add company's name.
 reliance-industries is code of Reliance Industries.
 ```
->> obj = MoneyControl("reliance-industries")
+>> obj = Investing("reliance-industries")
 ```
 Get headline and url link of content
 ```
