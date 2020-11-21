@@ -58,24 +58,24 @@ class Investing:
 
     def content(self,file_name):
         data = pd.read_csv(file_name,names = ['title','url','date'],encoding='latin1')
-        data['file-name'] = ""
+        data['content'] = ""
         for i in range(len(data['url'])):
             news_url = data['url'][i]
             # print(data['url'][i])
             news_content = requests.get(news_url,headers=self.headers)
             page = BeautifulSoup(news_content.content,'html.parser')
-            file_name = "article"+str(i)+".txt"
-            with open(file_name,'a') as f:
-                try:
-                    article = page.find('div',class_='WYSIWYG articlePage')
-                    cont = article.find_all('p')
-                    for para in cont:
-                        f.write(para.text)
-                        # print(para.text, sep="\n\n\n")
-                    data['file-name'][i]=file_name
-                    print(file_name)
-                except Exception as e:
-                    print("Error",e)
-                    pass
-            f.close()
-        data.to_csv('Investing-data.csv',index=True,header=True)
+            try:
+                article = page.find('div',class_='WYSIWYG articlePage')
+                cont = article.find_all('p')
+                content = []
+                for para in cont:
+                    # print(para.text, sep="\n\n\n")
+                    content.append(para.text)
+                content = "".join(content)
+                data['content'][i]=content
+                # print(content)
+                print("Extracting...",news_url)
+            except Exception as e:
+                print("Error",e)
+                pass
+        data.to_csv(self.comp_name+'-Investing-data.csv',index=True,header=True)
